@@ -63,16 +63,27 @@ User Decision → Behavioral Analyzer (ML) → Persona Builder → Adaptive Sele
 
 FinWise/
 ├── finwise_main.ipynb # Primary evaluation notebook
+
 ├── scenarios/
+
 │ └── scenario_database.py # 8 behavioral scenarios with bias tags
+
 ├── utils/
+
 │ ├── behavioral_analysis.py # ML-based pattern recognition
+
 │ ├── insight_generator.py # AI feedback generation
+
 │ └── scenario_selector.py # Adaptive selection algorithm
+
 ├── data/
+
 │ ├── sample_personas.json # Exported behavioral profiles
+
 │ └── user_*_decisions.json # Decision history logs
+
 ├── requirements.txt
+
 └── README.md
 
 
@@ -177,5 +188,6 @@ GitHub: @RigSri
 Email: srivastavahrige@gmail.com
 
 ⭐ If you find this project useful, please consider starring the repository!
+
 
 
