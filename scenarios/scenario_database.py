@@ -171,6 +171,180 @@ You haven't taken a vacation in 2 years.
         "metrics_to_track": ["choice", "decision_time", "confidence", "reasoning"],
         "ideal_choice": 1,  # Balanced approach
         "follow_up_question": "How did you weigh present enjoyment vs future gains?"
+    },
+    {
+        "id": "S009",
+        "topic": "Investment FOMO",
+        "bias_tested": "Herd Behavior",
+        "difficulty": 2,
+        "scenario_text": """
+Your friends are all investing in cryptocurrency and making 50% gains.
+You have ₹20,000 saved but don't fully understand crypto.
+
+Everyone says "it's going to the moon" and you feel like you're missing out.
+
+How much would you invest?
+        """,
+        "decision_type": "slider",  # 0 = Nothing, 100 = All ₹20k
+        "slider_labels": ["₹0", "₹5,000", "₹10,000", "₹20,000"],
+        "metrics_to_track": ["decision_value", "decision_time", "confidence"],
+        "ideal_range": [0, 30],  # Should be cautious about FOMO
+        "follow_up_question": "How much did peer pressure influence your decision?"
+    },
+    
+    {
+        "id": "S010",
+        "topic": "Lifestyle Inflation",
+        "bias_tested": "Status Quo Bias",
+        "difficulty": 2,
+        "scenario_text": """
+You got a 30% salary hike! Your salary increased from ₹30,000 to ₹40,000/month.
+
+Current expenses: ₹25,000/month
+Current savings: ₹5,000/month
+
+Friends suggest upgrading your lifestyle. How will you allocate the extra ₹10,000/month?
+        """,
+        "decision_type": "choice",
+        "options": [
+            "Save all ₹10,000 (total savings: ₹15,000/month)",
+            "Save ₹7,000, lifestyle upgrade ₹3,000",
+            "Save ₹5,000, lifestyle upgrade ₹5,000",
+            "Save ₹2,000, lifestyle upgrade ₹8,000"
+        ],
+        "metrics_to_track": ["choice", "decision_time", "confidence"],
+        "ideal_choice": 1,  # Balanced increase
+        "follow_up_question": "Did you consider your long-term financial goals?"
+    },
+    
+    {
+        "id": "S011",
+        "topic": "Insurance Decision",
+        "bias_tested": "Optimism Bias",
+        "difficulty": 2,
+        "scenario_text": """
+You're 24, healthy, just started working. Considering health insurance beyond company coverage.
+
+Options:
+A) Basic: ₹5,000/year, ₹2 lakh coverage
+B) Comprehensive: ₹12,000/year, ₹10 lakh coverage  
+C) Skip it: You already have ₹1 lakh company coverage
+
+You've never had major health issues. Is additional insurance worth it?
+        """,
+        "decision_type": "choice",
+        "options": [
+            "No additional insurance",
+            "Basic plan (₹5k/year)",
+            "Comprehensive plan (₹12k/year)"
+        ],
+        "metrics_to_track": ["choice", "decision_time", "confidence"],
+        "ideal_choice": 2,  # Better coverage recommended
+        "follow_up_question": "How likely do you think a health emergency is?"
+    },
+    
+    {
+        "id": "S012",
+        "topic": "Brand vs Generic",
+        "bias_tested": "Anchoring Bias",
+        "difficulty": 1,
+        "scenario_text": """
+You need to buy a phone charger. Two options at the store:
+
+Brand A (Samsung original): ₹1,200
+Brand B (Generic, same specs): ₹300
+
+Both have 1-year warranty. Reviews are similar (4.2 vs 4.0 stars).
+
+Which do you buy?
+        """,
+        "decision_type": "choice",
+        "options": ["Samsung (₹1,200)", "Generic (₹300)", "Need to research more"],
+        "metrics_to_track": ["choice", "decision_time"],
+        "ideal_choice": 1,  # Generic is rational choice
+        "follow_up_question": "Did the brand name influence you?"
+    },
+    
+    {
+        "id": "S013",
+        "topic": "Debt Management",
+        "bias_tested": "Mental Accounting",
+        "difficulty": 3,
+        "scenario_text": """
+You have ₹50,000 bonus. You also have two debts:
+
+Debt 1: Credit card (₹30,000 at 36% annual interest)
+Debt 2: Personal loan (₹1,00,000 at 12% annual interest)
+
+You also wanted to invest in a mutual fund (expected 15% returns).
+
+How do you use the ₹50,000?
+        """,
+        "decision_type": "choice",
+        "options": [
+            "Pay off credit card (₹30k) + invest ₹20k",
+            "Pay ₹50k toward personal loan",
+            "Invest all ₹50k in mutual fund",
+            "Pay ₹25k credit card + ₹25k loan"
+        ],
+        "metrics_to_track": ["choice", "decision_time", "confidence", "reasoning"],
+        "ideal_choice": 0,  # Kill high-interest debt first
+        "follow_up_question": "What was your priority: debt reduction or investment?"
+    },
+    
+    {
+        "id": "S014",
+        "topic": "Impulse vs Need",
+        "bias_tested": "Present Bias",
+        "difficulty": 1,
+        "scenario_text": """
+You're at the mall. You see a jacket on sale for ₹3,000 (originally ₹5,000).
+
+You have ₹5,000 left until month-end (10 days away).
+Upcoming expenses: ₹2,000 (groceries, transport).
+
+You already have 2 jackets at home, but this one looks great.
+
+Do you buy it?
+        """,
+        "decision_type": "choice",
+        "options": [
+            "Buy the jacket now",
+            "Don't buy - don't need it",
+            "Come back if money is left at month-end"
+        ],
+        "metrics_to_track": ["choice", "decision_time", "confidence"],
+        "ideal_choice": 2,  # Delay and reassess
+        "follow_up_question": "Was this a need or a want?"
+    },
+    
+    {
+        "id": "S015",
+        "topic": "Retirement Planning",
+        "bias_tested": "Hyperbolic Discounting",
+        "difficulty": 3,
+        "scenario_text": """
+You're 25. A financial advisor suggests starting retirement savings now.
+
+Option A: Invest ₹5,000/month from age 25 to 65 (40 years)
+Expected at 65: ₹2.5 crores (with compound growth)
+
+Option B: Invest ₹15,000/month from age 35 to 65 (30 years)
+Expected at 65: ₹1.8 crores
+
+Option C: "I'll start later, too young now"
+
+Your current salary easily allows ₹5,000/month savings.
+        """,
+        "decision_type": "choice",
+        "options": [
+            "Start ₹5,000/month now (Option A)",
+            "Will start ₹15,000/month at 35 (Option B)",
+            "Not thinking about retirement yet"
+        ],
+        "metrics_to_track": ["choice", "decision_time", "confidence"],
+        "ideal_choice": 0,  # Time value of money favors early start
+        "follow_up_question": "How real does retirement feel to you right now?"
     }
 ]
 
