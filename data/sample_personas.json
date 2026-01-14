@@ -1,0 +1,48 @@
+{
+  "user_a": {
+    "risk_tolerance": 12.5,
+    "impulsivity": 88.7,
+    "loss_aversion": 50.0,
+    "planning_horizon": 12.5,
+    "bias_patterns": {
+      "present_bias": 30.0,
+      "anchoring": 24.0,
+      "sunk_cost": 0.0,
+      "optimism_bias": 24.0,
+      "loss_aversion": 0.0
+    },
+    "decisions_made": 5,
+    "generated_at": "2026-01-14T19:22:22.587166"
+  },
+  "user_b": {
+    "risk_tolerance": 50.0,
+    "impulsivity": 31.7,
+    "loss_aversion": 92.5,
+    "planning_horizon": 85.0,
+    "bias_patterns": {
+      "present_bias": 0.0,
+      "anchoring": 0.0,
+      "sunk_cost": 0.0,
+      "optimism_bias": 0.0,
+      "loss_aversion": 28.0
+    },
+    "decisions_made": 5,
+    "generated_at": "2026-01-14T19:22:26.986559"
+  },
+  "user_c": {
+    "risk_tolerance": 51.1,
+    "impulsivity": 48.2,
+    "loss_aversion": 35.0,
+    "planning_horizon": 51.7,
+    "bias_patterns": {
+      "present_bias": 0.0,
+      "anchoring": 0.0,
+      "sunk_cost": 0.0,
+      "optimism_bias": 0.0,
+      "loss_aversion": 0.0
+    },
+    "decisions_made": 6,
+    "generated_at": "2026-01-14T19:22:30.959360"
+  },
+  "export_date": "2026-01-14T19:28:15.774190"
+}

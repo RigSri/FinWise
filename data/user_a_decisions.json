@@ -1,0 +1,42 @@
+[
+  {
+    "scenario_id": "S001",
+    "timestamp": "2026-01-14 19:22:22.586643",
+    "decision_value": 25,
+    "decision_time": 8.5,
+    "confidence": 4,
+    "revision_count": 0
+  },
+  {
+    "scenario_id": "S002",
+    "timestamp": "2026-01-14 19:22:22.586723",
+    "decision_value": 0,
+    "decision_time": 12.3,
+    "confidence": 5,
+    "revision_count": 0
+  },
+  {
+    "scenario_id": "S003",
+    "timestamp": "2026-01-14 19:22:22.586786",
+    "decision_value": 0,
+    "decision_time": 7.1,
+    "confidence": 5,
+    "revision_count": 0
+  },
+  {
+    "scenario_id": "S004",
+    "timestamp": "2026-01-14 19:22:22.586836",
+    "decision_value": 1,
+    "decision_time": 15.2,
+    "confidence": 4,
+    "revision_count": 1
+  },
+  {
+    "scenario_id": "S006",
+    "timestamp": "2026-01-14 19:22:22.586890",
+    "decision_value": 20,
+    "decision_time": 9.8,
+    "confidence": 3,
+    "revision_count": 0
+  }
+]
