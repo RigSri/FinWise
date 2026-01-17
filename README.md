@@ -1,11 +1,23 @@
+**HERE'S THE COMPLETE MODIFIED README WITH LIVE DEMO ADDED! 🚀**
+
+***
+
+```markdown
 # 🎯 FinWise: Learn to Make Smarter Money Decisions Through AI
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-success.svg)](https://projectfinwise.streamlit.app/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![AI Powered](https://img.shields.io/badge/AI-Powered-purple.svg)](/)
 
 > *Because knowing about money and making good money decisions are two very different things.*
+
+---
+
+## 🚀 **[Try FinWise Live!](https://projectfinwise.streamlit.app/)** 👈 Click here!
+
+**No installation needed** - experience the full platform in your browser right now.
 
 ---
 
@@ -59,6 +71,22 @@ Think of it like this:
 
 ---
 
+## 🎬 See It In Action
+
+### 🌐 **Live Demo**: [projectfinwise.streamlit.app](https://projectfinwise.streamlit.app/)
+
+Try it yourself! No signup required. Here's what you can do:
+
+1. **🏠 Explore the Home Page**: Read about cognitive biases, watch curated videos
+2. **🎯 Complete Scenarios**: Face realistic money decisions
+3. **📊 Get Your Profile**: See your behavioral analysis in real-time
+4. **🧮 Use Calculators**: Plan your emergency fund, calculate EMI, see compound interest
+5. **💬 Ask the AI Coach**: Get personalized advice (Gemini-powered)
+
+**Pro Tip**: Complete at least 3 scenarios to unlock your full behavioral profile!
+
+---
+
 ## 🚀 Why This Approach Works Better
 
 | Traditional Finance Apps | FinWise |
@@ -69,7 +97,7 @@ Think of it like this:
 | One-size-fits-all lessons | Adaptive scenarios that evolve with you |
 | Lecture-style learning | Reflective, mentor-like guidance |
 
-**The difference?** Research shows behavioral interventions reduce financial mistakes by 23-40% compared to pure knowledge training[web:114][web:115].
+**The difference?** Research shows behavioral interventions reduce financial mistakes by 23-40% compared to pure knowledge training.
 
 ---
 
@@ -137,7 +165,15 @@ FinWise/
 
 ## 🎮 Getting Started
 
-### Installation (2 minutes)
+### Option 1: Try It Online (Instant) ⚡
+
+**👉 [projectfinwise.streamlit.app](https://projectfinwise.streamlit.app/)**
+
+Zero setup! Just click and start exploring your financial decision-making patterns.
+
+---
+
+### Option 2: Run Locally (2 minutes)
 
 ```bash
 # Clone the repo
@@ -153,7 +189,9 @@ streamlit run app.py
 
 That's it! The app will open in your browser at `localhost:8501`.
 
-### Try the Demo Notebook
+---
+
+### Option 3: Demo Notebook
 
 ```bash
 jupyter notebook finwise_main.ipynb
@@ -240,7 +278,7 @@ We validated FinWise with 3 simulated user personas:
 | **Cautious Planner** | 28/100 | 18/100 | 82/100 | "Strong future orientation! Planning score: 82/100." |
 | **Balanced Investor** | 57/100 | 45/100 | 63/100 | "Balanced approach. You adapt strategies based on context." |
 
-**Result**: System successfully differentiates behavioral profiles and provides targeted recommendations[web:119][web:122].
+**Result**: System successfully differentiates behavioral profiles and provides targeted recommendations.
 
 ---
 
@@ -260,7 +298,7 @@ We validated FinWise with 3 simulated user personas:
 - They manage your money
 - We teach you how to think about money
 
-**Unique Value**: FinWise is the only platform that combines behavioral psychology, AI analysis, and personalized learning for financial decision-making[web:114][web:115].
+**Unique Value**: FinWise is the only platform that combines behavioral psychology, AI analysis, and personalized learning for financial decision-making.
 
 ---
 
@@ -270,7 +308,7 @@ This project is grounded in research from:
 
 - **Behavioral Economics**: Kahneman & Tversky's Prospect Theory
 - **Cognitive Psychology**: Bias detection frameworks
-- **Adaptive Learning**: Personalized educational pathways[web:120][web:123]
+- **Adaptive Learning**: Personalized educational pathways
 - **Financial Literacy**: Real-world application over theory
 
 ### Biases We Detect:
@@ -313,7 +351,7 @@ See [LICENSE](LICENSE) for details.
 ## 👨‍💻 About the Creator
 
 **Hrige Srivastava**  
-Student | AI Minor IIT ROPAR  
+Student IIT Ropoar | AI Minor 
 Passionate about using AI to solve real-world problems, especially in education and financial inclusion.
 
 **Why I Built This:**  
@@ -337,6 +375,7 @@ Open an issue or submit a pull request. Let's make financial education work for 
 
 - **GitHub**: [@RigSri](https://github.com/RigSri)
 - **Email**: srivastavahrige@gmail.com
+- **Live Demo**: [projectfinwise.streamlit.app](https://projectfinwise.streamlit.app/)
 - **Project Link**: [github.com/RigSri/FinWise](https://github.com/RigSri/FinWise)
 
 ---
@@ -345,8 +384,9 @@ Open an issue or submit a pull request. Let's make financial education work for 
 
 - **Behavioral Finance Research** by Daniel Kahneman & Amos Tversky
 - **Inspiration**: Khan Academy's adaptive learning approach
-- **Video Creators**: CA Rachana Ranade, Ankur Warikoo, Think School
+- **Video Creators**: CA Rachana Ranade, Ankur Warikoo, Think School, Finance with Sharan
 - **Design Philosophy**: Make it feel like a mentor, not a teacher
+- **Streamlit Community**: For making deployment incredibly simple
 
 ---
 
@@ -363,10 +403,10 @@ It helps others discover the project.
 
 *"The best investment you can make is in yourself."* - Warren Buffett
 
+[**🚀 Try FinWise Now**](https://projectfinwise.streamlit.app/)
+
 </div>
 
-***
+**COPY THIS NOW! TIME CHECK: 12:24 PM - WE HAVE 11.5 HOURS LEFT!**
 
-
-
-
+**NEXT: REPORT OR PRESENTATION? WHICH IS MORE URGENT? 📊🎤**
