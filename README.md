@@ -1,25 +1,16 @@
-**HERE'S THE COMPLETE MODIFIED README WITH LIVE DEMO ADDED! 🚀**
-
 ***
 
-```markdown
 # 🎯 FinWise: Learn to Make Smarter Money Decisions Through AI
-
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io/)
-[![Live Demo](https://img.shields.io/badge/Live-Demo-success.svg)](https://projectfinwise.streamlit.app/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![AI Powered](https://img.shields.io/badge/AI-Powered-purple.svg)](/)
 
 > *Because knowing about money and making good money decisions are two very different things.*
 
----
+***
 
 ## 🚀 **[Try FinWise Live!](https://projectfinwise.streamlit.app/)** 👈 Click here!
 
 **No installation needed** - experience the full platform in your browser right now.
 
----
+***
 
 ## 💡 The Problem We're Solving
 
@@ -34,7 +25,7 @@ Why? Because traditional finance education teaches you *what* to do (save 20%, i
 
 **The gap?** Nobody tells you *your* specific biases and how *you* think about money.
 
----
+***
 
 ## 🎓 What FinWise Actually Does
 
@@ -69,7 +60,7 @@ Think of it like this:
    - Video tutorials from top finance creators
    - Financial calculators (compound interest, EMI, emergency fund)
 
----
+***
 
 ## 🎬 See It In Action
 
@@ -85,7 +76,7 @@ Try it yourself! No signup required. Here's what you can do:
 
 **Pro Tip**: Complete at least 3 scenarios to unlock your full behavioral profile!
 
----
+***
 
 ## 🚀 Why This Approach Works Better
 
@@ -99,7 +90,7 @@ Try it yourself! No signup required. Here's what you can do:
 
 **The difference?** Research shows behavioral interventions reduce financial mistakes by 23-40% compared to pure knowledge training.
 
----
+***
 
 ## 🛠️ Tech Stack & AI Architecture
 
@@ -136,7 +127,7 @@ You Get Better! 🎉
 3. **Pattern recognition**: Detects biases across multiple decisions (not single choices)
 4. **Contextual feedback**: Insights reference YOUR specific decisions, not generic advice
 
----
+***
 
 ## 📂 Project Structure
 
@@ -161,7 +152,7 @@ FinWise/
 
 **Total Code**: ~2,000+ lines of Python (excluding frontend markup)
 
----
+***
 
 ## 🎮 Getting Started
 
@@ -171,7 +162,7 @@ FinWise/
 
 Zero setup! Just click and start exploring your financial decision-making patterns.
 
----
+***
 
 ### Option 2: Run Locally (2 minutes)
 
@@ -189,7 +180,7 @@ streamlit run app.py
 
 That's it! The app will open in your browser at `localhost:8501`.
 
----
+***
 
 ### Option 3: Demo Notebook
 
@@ -203,7 +194,7 @@ The notebook walks through:
 - Bias detection in action
 - Insight generation examples
 
----
+***
 
 ## 📊 What You'll Discover About Yourself
 
@@ -231,7 +222,7 @@ After completing scenarios, you'll get your **Behavioral Finance Profile**:
 - Practice: 30-second pause before big financial decisions
 - Focus: Emergency fund calculator (builds long-term thinking)
 
----
+***
 
 ## 🎨 Key Features
 
@@ -266,7 +257,7 @@ After completing scenarios, you'll get your **Behavioral Finance Profile**:
 - Strengths, growth areas, progress summary
 - Shareable with advisors/mentors
 
----
+***
 
 ## 🧪 Testing & Validation
 
@@ -280,7 +271,7 @@ We validated FinWise with 3 simulated user personas:
 
 **Result**: System successfully differentiates behavioral profiles and provides targeted recommendations.
 
----
+***
 
 ## 🌟 What Makes FinWise Different?
 
@@ -300,7 +291,7 @@ We validated FinWise with 3 simulated user personas:
 
 **Unique Value**: FinWise is the only platform that combines behavioral psychology, AI analysis, and personalized learning for financial decision-making.
 
----
+***
 
 ## 📚 Educational Foundation
 
@@ -316,7 +307,7 @@ This project is grounded in research from:
 ✅ Sunk Cost Fallacy | ✅ Confirmation Bias | ✅ Herd Mentality  
 ✅ Overconfidence Bias | ✅ Mental Accounting
 
----
+***
 
 ## 🚧 Roadmap & Future Enhancements
 
@@ -338,7 +329,7 @@ This project is grounded in research from:
 - [ ] Corporate training modules
 - [ ] Research paper publication
 
----
+***
 
 ## 📜 License
 
@@ -346,18 +337,18 @@ MIT License - feel free to use, modify, and build upon FinWise!
 
 See [LICENSE](LICENSE) for details.
 
----
+***
 
 ## 👨‍💻 About the Creator
 
 **Hrige Srivastava**  
-Student IIT Ropoar | AI Minor 
+Computer Science Student | AI Minor  IIT Ropar
 Passionate about using AI to solve real-world problems, especially in education and financial inclusion.
 
 **Why I Built This:**  
 I watched friends (including myself) make dumb money mistakes despite knowing better. Reading Kahneman's "Thinking, Fast and Slow" changed my perspective - *it's not about knowledge, it's about how we think*. FinWise is my attempt to help people see their blind spots.
 
----
+***
 
 ## 🤝 Contributing
 
@@ -369,7 +360,7 @@ Contributions welcome! Whether it's:
 
 Open an issue or submit a pull request. Let's make financial education work for everyone.
 
----
+***
 
 ## 📞 Connect
 
@@ -378,7 +369,7 @@ Open an issue or submit a pull request. Let's make financial education work for 
 - **Live Demo**: [projectfinwise.streamlit.app](https://projectfinwise.streamlit.app/)
 - **Project Link**: [github.com/RigSri/FinWise](https://github.com/RigSri/FinWise)
 
----
+***
 
 ## 🙏 Acknowledgments
 
@@ -388,14 +379,14 @@ Open an issue or submit a pull request. Let's make financial education work for 
 - **Design Philosophy**: Make it feel like a mentor, not a teacher
 - **Streamlit Community**: For making deployment incredibly simple
 
----
+***
 
 ## ⭐ Star Us!
 
 If FinWise helped you understand your money mindset better, give us a star! ⭐  
 It helps others discover the project.
 
----
+***
 
 <div align="center">
 
@@ -407,6 +398,4 @@ It helps others discover the project.
 
 </div>
 
-**COPY THIS NOW! TIME CHECK: 12:24 PM - WE HAVE 11.5 HOURS LEFT!**
-
-**NEXT: REPORT OR PRESENTATION? WHICH IS MORE URGENT? 📊🎤**
+***
