@@ -12,7 +12,7 @@
       "loss_aversion": 0.0
     },
     "decisions_made": 5,
-    "generated_at": "2026-01-14T19:22:22.587166"
+    "generated_at": "2026-01-14T20:30:13.329154"
   },
   "user_b": {
     "risk_tolerance": 50.0,
@@ -27,7 +27,7 @@
       "loss_aversion": 28.0
     },
     "decisions_made": 5,
-    "generated_at": "2026-01-14T19:22:26.986559"
+    "generated_at": "2026-01-14T20:30:13.340233"
   },
   "user_c": {
     "risk_tolerance": 51.1,
@@ -42,7 +42,7 @@
       "loss_aversion": 0.0
     },
     "decisions_made": 6,
-    "generated_at": "2026-01-14T19:22:30.959360"
+    "generated_at": "2026-01-14T20:30:13.351382"
   },
-  "export_date": "2026-01-14T19:28:15.774190"
+  "export_date": "2026-01-14T20:30:13.728339"
 }

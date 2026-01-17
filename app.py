@@ -559,11 +559,7 @@ with st.sidebar:
     if st.button("🧮 Financial Calculators", use_container_width=True):
         st.session_state.page = "calculators"
         st.rerun()
-    
-    if st.button("⚡ Quick Bias Quiz", use_container_width=True):
-        st.session_state.page = "quiz"
-        st.rerun()
-    
+
     st.markdown("---")
     st.markdown("### Progress Dashboard")
     progress = st.session_state.selector.get_progress_stats()
@@ -603,9 +599,215 @@ with st.sidebar:
         st.plotly_chart(fig, use_container_width=True)
         st.info(f"**Archetype:** {st.session_state.analyzer.get_persona_archetype(persona)}")
         
+# =============================================================================
+# FINWISE BUDDY - FLOATING CHAT WIDGET 🤖💰
+# =============================================================================
+
+# Initialize coach
+if 'coach' not in st.session_state:
+    try:
+        api_key = st.secrets.get("GEMINI_API_KEY", "")
+        if api_key:
+            from utils.finwise_coach import FinWiseCoach
+            st.session_state.coach = FinWiseCoach(api_key)
+            if 'chat_messages' not in st.session_state:
+                st.session_state.chat_messages = []
+            if 'show_chat_popup' not in st.session_state:
+                st.session_state.show_chat_popup = False
+            if 'last_request_time' not in st.session_state:
+                st.session_state.last_request_time = 0
+        else:
+            st.session_state.coach = None
+    except Exception as e:
+        st.session_state.coach = None
+
+# Floating chat button CSS
+if st.session_state.get('coach'):
+    st.markdown("""
+        <style>
+        .floating-chat-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .floating-chat-btn:hover {
+            transform: scale(1.1);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+# Process chat function with rate limiting
+def process_chat_message(prompt):
+    """Process user message and get AI response"""
+    st.session_state.chat_messages.append({"role": "user", "content": prompt})
+    
+    # Check last request time to avoid rate limits
+    import time
+    current_time = time.time()
+    
+    if 'last_request_time' not in st.session_state:
+        st.session_state.last_request_time = 0
+    
+    # Enforce 5 second delay between requests
+    time_since_last = current_time - st.session_state.last_request_time
+    if time_since_last < 5:
+        wait_time = int(5 - time_since_last) + 1
+        st.session_state.chat_messages.append({
+            "role": "assistant",
+            "content": f"⏱️ Please wait {wait_time} more seconds before asking another question to avoid rate limits!"
+        })
+        st.rerun()
+        return
+    
+    try:
+        persona = st.session_state.analyzer.generate_persona()
+        
+        # Get decisions safely
+        decisions = []
+        if hasattr(st.session_state.analyzer, 'decisions'):
+            if isinstance(st.session_state.analyzer.decisions, list):
+                decisions = st.session_state.analyzer.decisions
+        
+        progress = st.session_state.selector.get_progress_stats()
+        
+        # Call coach
+        answer = st.session_state.coach.ask(prompt, persona, decisions, progress)
+        
+        # Update last request time
+        st.session_state.last_request_time = time.time()
+        
+        st.session_state.chat_messages.append({"role": "assistant", "content": answer})
+    except Exception as e:
+        st.session_state.chat_messages.append({
+            "role": "assistant",
+            "content": f"❌ Oops! Error: {str(e)}\n\nTry asking differently!"
+        })
+    
+    st.rerun()
+
+# Chat popup modal
+@st.dialog("💰 FinWise Buddy Chat", width="large")
+def show_chat_popup():
+    """Show chat interface in popup"""
+    
+    # Welcome or chat history
+    if not st.session_state.chat_messages:
+        st.markdown("""
+            <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                        padding: 1.5rem; border-radius: 12px; text-align: center; margin-bottom: 1rem;'>
+                <h2 style='margin: 0; color: white;'>👋 Hey! I'm FinWise Buddy!</h2>
+                <p style='margin-top: 0.5rem; color: #f0f0f0;'>
+                    Your AI financial coach ready to help! 💪
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("**💡 I can help you with:**")
+        st.markdown("""
+        - 📊 Understanding your financial behavior
+        - 🎯 Recommending scenarios to try next
+        - 💰 Giving personalized money tips
+        - 🤔 Explaining why your scores are high/low
+        - 📈 Tracking your progress
+        """)
+        
+        # Quick question buttons
+        st.markdown("---")
+        st.markdown("**🚀 Quick Questions:**")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("📊 Explain My Profile", key="qb1", use_container_width=True):
+                process_chat_message("Explain my behavioral profile in simple terms")
+            if st.button("🎯 Next Scenario?", key="qb2", use_container_width=True):
+                process_chat_message("Which scenario should I try next and why?")
+        
+        with col2:
+            if st.button("💰 Money Tips", key="qb3", use_container_width=True):
+                process_chat_message("Give me 3 financial tips based on my profile")
+            if st.button("📈 My Progress", key="qb4", use_container_width=True):
+                process_chat_message("How am I doing? Show my progress")
+    else:
+        # Display chat messages
+        for msg in st.session_state.chat_messages:
+            if msg["role"] == "user":
+                st.markdown(f"""
+                    <div style='background-color: #1e3a5f; padding: 1rem; 
+                                border-radius: 10px; margin: 0.5rem 0;'>
+                        <strong>🧑 You:</strong><br>{msg['content']}
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                    <div style='background-color: #0f5132; padding: 1rem; 
+                                border-radius: 10px; margin: 0.5rem 0;'>
+                        <strong>🤖 FinWise Buddy:</strong><br>{msg['content']}
+                    </div>
+                """, unsafe_allow_html=True)
+    
+    # Input section
+    st.markdown("---")
+    st.markdown("**💬 Ask me anything:**")
+    
+    user_input = st.text_area(
+        "Your question:",
+        key="chat_popup_input",
+        height=100,
+        placeholder="e.g., Why is my impulsivity score high?",
+        label_visibility="collapsed"
+    )
+    
+    col1, col2 = st.columns([3, 1])
+    
+    with col1:
+        if st.button("🚀 Send", type="primary", use_container_width=True, key="send_popup_btn"):
+            if user_input and user_input.strip():
+                process_chat_message(user_input)
+            else:
+                st.warning("Please type a question first!")
+    
+    with col2:
+        if st.button("🗑️ Clear", use_container_width=True, key="clear_popup_btn"):
+            st.session_state.chat_messages = []
+            st.rerun()
+    
+    # Chat stats
+    if st.session_state.chat_messages:
+        msg_count = len([m for m in st.session_state.chat_messages if m['role'] == 'user'])
+        st.caption(f"💬 {msg_count} questions asked")
+
+# Main area - Floating button trigger
+if st.session_state.get('coach'):
+    # Add some space at bottom for button
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Floating chat button
+    col1, col2, col3 = st.columns([4, 1, 1])
+    with col3:
+        if st.button("💬", key="floating_chat_btn", help="Chat with FinWise Buddy"):
+            show_chat_popup()
+else:
+    st.info("💡 Add GEMINI_API_KEY to activate FinWise Buddy")
+
+
+
+
+    persona = st.session_state.analyzer.generate_persona()
+    progress = st.session_state.selector.get_progress_stats()
         # Achievement badges
-        badges = check_achievements(persona, progress)
-        if badges:
+    badges = check_achievements(persona, progress)
+    if badges:
             st.markdown("**🏆 Achievements:**")
             for badge in badges:
                 st.markdown(f"<span class='badge'>{badge}</span>", unsafe_allow_html=True)
@@ -694,6 +896,254 @@ if st.session_state.page == "home":
             )
             st.session_state.current_scenario = first_scenario
             st.rerun()
+    # =============================================================================
+    # INTERACTIVE BIAS EXPLAINERS 🧠
+    # =============================================================================
+    st.markdown("---")
+    st.markdown("### 🧠 Understanding Cognitive Biases")
+    st.markdown("*Learn about the psychological patterns that influence your financial decisions*")
+
+    # Bias explainer data
+    bias_explainers = {
+        "⚓ Anchoring Bias": {
+            "definition": "The tendency to rely too heavily on the first piece of information you encounter (the 'anchor') when making decisions.",
+            "example": "A shirt originally priced at ₹5,000 is on 'sale' for ₹3,000. You feel like you're getting a great deal because of the anchor (₹5,000), even though ₹3,000 might still be overpriced for that shirt!",
+            "impact": "Retailers use this constantly! They show inflated 'original prices' to make discounts seem bigger. You end up spending more than you would have without seeing that first number.",
+            "how_to_avoid": "Always research actual market prices before buying. Ask yourself: 'Would I pay this much if I hadn't seen the original price?' Ignore the anchor and focus on real value.",
+        },
+        "⏰ Present Bias": {
+            "definition": "The tendency to prioritize immediate rewards over future benefits, even when the future benefit is objectively better.",
+            "example": "Choosing ₹100 today instead of ₹150 next month. Or spending ₹150 daily on coffee instead of saving it (₹54,750/year!).",
+            "impact": "Makes saving nearly impossible! Your brain values 'now' so much more than 'later' that long-term goals feel abstract and unimportant. This is why retirement savings are so hard.",
+            "how_to_avoid": "Automate savings FIRST before you see the money. Visualize your future self - imagine how grateful they'll be. Use the '10-10-10 rule': How will I feel about this in 10 minutes? 10 months? 10 years?",
+        },
+        "😰 Loss Aversion": {
+            "definition": "The pain of losing something is psychologically twice as powerful as the pleasure of gaining something equivalent.",
+            "example": "Losing ₹1,000 feels much worse than the joy of winning ₹1,000. This makes you avoid reasonable risks or hold onto losing investments hoping to 'break even'.",
+            "impact": "You become too risk-averse, missing growth opportunities. Or worse, you hold losing stocks/investments because selling would 'lock in' the loss, leading to even bigger losses!",
+            "how_to_avoid": "Focus on long-term probabilities, not emotions. Past losses are already gone - make decisions based on future potential. Use stop-loss limits to force rational exit points.",
+        },
+        "🔍 Confirmation Bias": {
+            "definition": "The tendency to search for, interpret, and remember information in a way that confirms your existing beliefs, while ignoring contradicting evidence.",
+            "example": "You want to buy a new phone, so you only read positive reviews and ignore negative ones. Or you believe crypto is great, so you only follow crypto bulls on Twitter.",
+            "impact": "You make decisions based on incomplete information, leading to costly mistakes. You become trapped in echo chambers where bad ideas never get challenged.",
+            "how_to_avoid": "Actively seek opposing viewpoints. Before any big decision, deliberately search for reasons NOT to do it. Ask: 'What would prove me wrong?' Play devil's advocate with yourself.",
+        },
+        "💸 Sunk Cost Fallacy": {
+            "definition": "Continuing something because you've already invested time, money, or effort, even when it's clearly not working and continuing makes no rational sense.",
+            "example": "Staying in a bad stock because 'I've already lost so much, I can't quit now!' Or finishing a terrible movie because you paid for the ticket. Or keeping a gym membership you never use.",
+            "impact": "You throw good money after bad, escalating losses instead of cutting them. Past investments cloud your judgment about future decisions. You waste resources on losing propositions.",
+            "how_to_avoid": "Remember: Sunk costs are GONE. They're history. Make decisions based only on future costs and benefits. Ask: 'If I were starting fresh today, would I make this same choice?'",
+        },
+        "😎 Overconfidence Bias": {
+            "definition": "Overestimating your knowledge, abilities, and the precision of your predictions. Believing you're better at decisions than you actually are.",
+            "example": "Day trading stocks because you 'figured out the pattern' after 3 winning trades. Or thinking you can time the market. Or not doing research because 'I know enough already'.",
+            "impact": "You take excessive risks without proper research. You ignore expert advice. You lose money on speculative bets. Studies show overconfident investors earn lower returns!",
+            "how_to_avoid": "Track your predictions and decisions - you'll see you're wrong often! Always do proper research. Seek expert opinions. Remember: Even pros get it wrong regularly. Stay humble!",
+        },
+        "🐑 Herd Mentality": {
+            "definition": "Following what everyone else is doing, assuming the crowd knows better, without doing your own research or thinking independently.",
+            "example": "Buying crypto in 2021 because 'everyone's talking about it!' Or investing in a stock because it's trending on social media. Or rushing to buy toilet paper during COVID panic.",
+            "impact": "You buy high when everyone's excited (market top) and sell low when everyone's panicking (market bottom). The crowd is often wrong at extremes! This destroys wealth systematically.",
+            "how_to_avoid": "Do your own research always. Be skeptical of trends and hype. Remember Warren Buffett: 'Be fearful when others are greedy, greedy when others are fearful.' Think independently!",
+        },
+        "🧠 Mental Accounting": {
+            "definition": "Treating money differently based on its source or intended purpose, even though money is fungible (all money is the same).",
+            "example": "Spending gift money more freely than salary. Saving in a 3% savings account while carrying 18% credit card debt. Having separate 'vacation fund' and 'emergency fund' instead of optimizing total returns.",
+            "impact": "You make irrational decisions that cost you money. You don't optimize across all your finances. You might save while in debt, effectively losing 15% on that money!",
+            "how_to_avoid": "Treat all money the same - it's all YOUR money! Optimize across your entire financial life. Pay high-interest debt before saving. View finances holistically, not in separate 'buckets'.",
+        },
+    }
+
+    # Display biases in expandable sections
+    for bias_name, bias_info in bias_explainers.items():
+        with st.expander(f"{bias_name}", expanded=False):
+            # Definition
+            st.markdown(f"**📖 What is it?**")
+            st.info(bias_info["definition"])
+            
+            # Real-world example
+            st.markdown(f"**💡 Real-World Example:**")
+            st.success(bias_info["example"])
+            
+            # Impact on finances
+            st.markdown(f"**💰 Impact on Your Money:**")
+            st.warning(bias_info["impact"])
+            
+            # How to avoid
+            st.markdown(f"**🛡️ How to Avoid This Bias:**")
+            st.success(bias_info["how_to_avoid"])
+
+    # =============================================================================
+    # VIDEO EXPLAINERS - QUICK LEARNING 🎥
+    # =============================================================================
+    st.markdown("---")
+    st.markdown("### 🎥 Video Explainers - Master Money Skills Fast!")
+    st.markdown("*Watch curated videos to understand key concepts in minutes*")
+
+    # Video library with thumbnails - ALL VERIFIED WORKING VIDEOS!
+    video_library = {
+        "🧠 Cognitive Biases": [
+            {
+                "title": "Anchoring Bias Explained",
+                "video_id": "JLeyIdWv2Q8",
+                "description": "How the first number you see controls your decisions",
+                "duration": "3:45",
+                "channel": "Sprouts"
+            },
+            {
+                "title": "Present Bias - Why We Choose Now Over Later",
+                "video_id": "49UlfbT1JTY",
+                "description": "Understanding why immediate rewards feel so tempting",
+                "duration": "8:11",
+                "channel": "Behavioral Economics"
+            },
+            {
+                "title": "Loss Aversion Explained",
+                "video_id": "Igr-avFbfb8",
+                "description": "Why losing ₹100 hurts more than winning ₹100 feels good",
+                "duration": "3:56",
+                "channel": "Marketing Business Network"
+            },
+            {
+                "title": "Sunk Cost Fallacy",
+                "video_id": "q4ZOY5fI-e8",
+                "description": "Why we throw good money after bad decisions",
+                "duration": "3:26",
+                "channel": "Marketing Business Network"
+            },
+            {
+                "title": "Confirmation Bias in Investing",
+                "video_id": "5lIkLg1F7eM",
+                "description": "How to overcome this costly mental trap",
+                "duration": "6:45",
+                "channel": "Financial Education"
+            },
+            {
+                "title": "Mental Accounting & Money Mistakes",
+                "video_id": "N2GLiZPJp-s",
+                "description": "Why we treat salary and gift money differently",
+                "duration": "5:17",
+                "channel": "Finance Unlocked"
+            },
+        ],
+        "💰 Money Skills": [
+            {
+                "title": "Emergency Fund - What & How Much",
+                "video_id": "R2OvsQCubGw",
+                "description": "3-6 months expenses explained simply",
+                "duration": "7:26",
+                "channel": "Financial Bunny"
+            },
+            {
+                "title": "50/30/20 Budget Rule",
+                "video_id": "LKxOamnP8J4",
+                "description": "The simplest budgeting method that works",
+                "duration": "6:02",
+                "channel": "Khan Academy"
+            },
+            {
+                "title": "How to Start SIP in India",
+                "video_id": "ZXLATRO3Ifw",
+                "description": "Mutual funds investing for beginners",
+                "duration": "8:45",
+                "channel": "Sanjay Kathuria"
+            },
+            {
+                "title": "Credit Card Management",
+                "video_id": "IWsKUCr-tdk",
+                "description": "Avoid the debt trap, use cards smartly",
+                "duration": "9:12",
+                "channel": "Meghala"
+            },
+        ],
+        "📈 Investing & Finance": [
+            {
+                "title": "Herd Mentality in Stock Market",
+                "video_id": "XloSxBEUCNA",
+                "description": "Why following the crowd loses money",
+                "duration": "12:00",
+                "channel": "Financial Education"
+            },
+            {
+                "title": "Compound Interest Explained",
+                "video_id": "TM2yIF0bASM",
+                "description": "The magic of money growth over time",
+                "duration": "31:45",
+                "channel": "The Organic Chemistry Tutor"
+            },
+            {
+                "title": "Behavioral Finance Basics",
+                "video_id": "YUedGJ9KPTg",
+                "description": "Prospect theory and mental accounting",
+                "duration": "13:13",
+                "channel": "Corporate Finance Institute"
+            },
+        ],
+        "💡 Student Money Hacks": [
+            {
+                "title": "Personal Finance Tips for Students",
+                "video_id": "eOmTJDMhkXw",
+                "description": "How to manage money as a student",
+                "duration": "3:47",
+                "channel": "Unacademy"
+            },
+            {
+                "title": "5 Simple Hacks to Save Big",
+                "video_id": "J_cuCDyQc7g",
+                "description": "Practical saving tips for Indian students",
+                "duration": "3:36",
+                "channel": "Finance with Sharan"
+            },
+            {
+                "title": "Money Mistakes Indians Must Avoid",
+                "video_id": "O8UwkDsVAX8",
+                "description": "UPI habits, subscriptions, and common pitfalls",
+                "duration": "13:45",
+                "channel": "Sanjay Kathuria"
+            },
+            {
+                "title": "Complete Financial Planning for 20s",
+                "video_id": "BChDsJdOOrQ",
+                "description": "Step-by-step money guide for young adults",
+                "duration": "38:00",
+                "channel": "Ankur Warikoo"
+            },
+        ],
+    }
+
+    # Display videos in tabs
+    video_tabs = st.tabs(list(video_library.keys()))
+
+    for tab, category in zip(video_tabs, video_library.keys()):
+        with tab:
+            videos = video_library[category]
+            
+            # Display videos in 2-column grid
+            for i in range(0, len(videos), 2):
+                cols = st.columns(2)
+                
+                for j, col in enumerate(cols):
+                    if i + j < len(videos):
+                        video = videos[i + j]
+                        video_url = f"https://www.youtube.com/watch?v={video['video_id']}"
+                        thumbnail_url = f"https://img.youtube.com/vi/{video['video_id']}/hqdefault.jpg"
+                        
+                        with col:
+                            # Video thumbnail
+                            st.image(thumbnail_url, use_container_width=True)
+                            
+                            # Video info
+                            st.markdown(f"**{video['title']}** ⏱️ {video['duration']}")
+                            st.caption(f"{video['description']}")
+                            st.caption(f"📺 {video['channel']}")
+                            
+                            # Watch button
+                            st.link_button("▶️ Watch on YouTube", video_url, use_container_width=True)
+                            
+                            st.markdown("")  # Spacing
+
+
 
 elif st.session_state.page == "calculators":
     # FINANCIAL CALCULATORS PAGE
@@ -781,96 +1231,7 @@ elif st.session_state.page == "calculators":
                     monthly_save = remaining / months
                     st.info(f"Save ₹{monthly_save:,.0f}/month → Reach goal in {months} months")
 
-elif st.session_state.page == "quiz":
-    # QUICK BIAS QUIZ PAGE
-    st.markdown("## ⚡ Quick Bias Awareness Quiz")
-    st.markdown("Test your understanding of cognitive biases in 2 minutes!")
-    
-    if 'quiz_started' not in st.session_state:
-        st.session_state.quiz_started = False
-        st.session_state.quiz_score = 0
-        st.session_state.quiz_current = 0
-    
-    quiz_questions = [
-        {
-            "question": "Your friend bought Bitcoin and made 50% returns. You immediately want to invest too. This is:",
-            "options": ["Herd Behavior", "Anchoring Bias", "Loss Aversion", "Present Bias"],
-            "correct": 0,
-            "explanation": "Following others' investment decisions without research is Herd Behavior."
-        },
-        {
-            "question": "You see a laptop marked ₹50,000 down from ₹80,000. You buy it, thinking it's a deal. Another store sells it for ₹45,000. You fell for:",
-            "options": ["Sunk Cost Fallacy", "Anchoring Bias", "Mental Accounting", "Optimism Bias"],
-            "correct": 1,
-            "explanation": "The original price ₹80,000 anchored your perception of value."
-        },
-        {
-            "question": "You've paid ₹5,000 for a gym membership you never use. You renew because 'you already paid.' This is:",
-            "options": ["Present Bias", "Status Quo Bias", "Sunk Cost Fallacy", "Loss Aversion"],
-            "correct": 2,
-            "explanation": "Continuing because of past investment (sunk cost) rather than future value."
-        },
-        {
-            "question": "You'd rather get ₹100 today than ₹150 in 2 months, even with no urgent needs. This shows:",
-            "options": ["Hyperbolic Discounting", "Mental Accounting", "Herd Behavior", "Anchoring"],
-            "correct": 0,
-            "explanation": "Overvaluing immediate rewards over larger future ones is Hyperbolic Discounting."
-        },
-        {
-            "question": "You think 'I'm young, I don't need health insurance' despite statistics. This is:",
-            "options": ["Present Bias", "Optimism Bias", "Status Quo Bias", "Loss Aversion"],
-            "correct": 1,
-            "explanation": "Underestimating personal risk despite data is Optimism Bias."
-        }
-    ]
-    
-    if not st.session_state.quiz_started:
-        st.info("5 quick questions to test your bias awareness. Ready?")
-        if st.button("Start Quiz", type="primary"):
-            st.session_state.quiz_started = True
-            st.session_state.quiz_current = 0
-            st.session_state.quiz_score = 0
-            st.rerun()
-    
-    elif st.session_state.quiz_current < len(quiz_questions):
-        q = quiz_questions[st.session_state.quiz_current]
-        
-        st.markdown(f"### Question {st.session_state.quiz_current + 1}/{len(quiz_questions)}")
-        st.markdown(f"**{q['question']}**")
-        
-        answer = st.radio("Select your answer:", q['options'], key=f"q{st.session_state.quiz_current}")
-        
-        if st.button("Submit Answer", type="primary"):
-            if q['options'].index(answer) == q['correct']:
-                st.session_state.quiz_score += 1
-                st.success(f"✅ Correct! {q['explanation']}")
-            else:
-                st.error(f"❌ Incorrect. {q['explanation']}")
-            
-            st.session_state.quiz_current += 1
-            if st.session_state.quiz_current < len(quiz_questions):
-                if st.button("Next Question"):
-                    st.rerun()
-            else:
-                st.rerun()
-    
-    else:
-        score_pct = (st.session_state.quiz_score / len(quiz_questions)) * 100
-        
-        st.balloons()
-        st.markdown(f"### Quiz Complete!")
-        st.markdown(f"## Score: {st.session_state.quiz_score}/{len(quiz_questions)} ({score_pct:.0f}%)")
-        
-        if score_pct >= 80:
-            st.success("🌟 Excellent! You have strong bias awareness!")
-        elif score_pct >= 60:
-            st.info("👍 Good job! Keep learning about behavioral finance.")
-        else:
-            st.warning("📚 Consider doing the full scenario training to improve!")
-        
-        if st.button("Retake Quiz"):
-            st.session_state.quiz_started = False
-            st.rerun()
+
 
 elif st.session_state.page == "scenarios":
     

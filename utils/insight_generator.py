@@ -3,8 +3,10 @@ AI Insight Generator
 Generates reflective, mentor-like insights from behavioral data
 """
 
+
 import numpy as np
 from datetime import datetime
+
 
 class InsightGenerator:
     """Generates personalized insights based on behavioral persona"""
@@ -132,30 +134,36 @@ class InsightGenerator:
             'archetype_description': ''
         }
         
-        # Risk tolerance insights
+        # Risk tolerance insights - LOWERED THRESHOLDS
         risk = persona['risk_tolerance']
-        if risk > 70:
-            insights['strengths'].append("You're comfortable with uncertainty and willing to take calculated risks for better returns.")
-        elif risk < 30:
+        if risk > 50:  # Changed from 70
+            insights['strengths'].append(f"You're comfortable with calculated risks (risk: {risk:.0f}/100) - essential for wealth building!")
+        elif risk > 30 and risk <= 70:  # NEW: Balanced range
+            insights['strengths'].append(f"You have a balanced approach to risk (risk: {risk:.0f}/100) - not too conservative, not too reckless!")
+        elif risk < 25:  # Changed from 30
             insights['growth_areas'].append(f"You avoid risk even when odds are favorable. Your risk tolerance ({risk:.0f}/100) may limit growth opportunities.")
         
         # Impulsivity insights
         impulsivity = persona['impulsivity']
         if impulsivity > 70:
             insights['growth_areas'].append(f"You decide very quickly (impulsivity: {impulsivity:.0f}/100). Complex financial decisions often benefit from deliberation.")
-        elif impulsivity < 30:
-            insights['strengths'].append("You think carefully before deciding, weighing multiple factors systematically.")
+        elif impulsivity < 50:  # Changed from 30
+            insights['strengths'].append(f"You think carefully before deciding (impulsivity: {impulsivity:.0f}/100), weighing multiple factors systematically.")
         
-        # Planning horizon insights
+        # Planning horizon insights - LOWERED THRESHOLDS
         planning = persona['planning_horizon']
-        if planning > 65:
-            insights['strengths'].append(f"Strong future orientation! You naturally consider long-term implications (planning score: {planning:.0f}/100).")
+        if planning > 55:  # Changed from 65
+            insights['strengths'].append(f"Strong future orientation! You naturally consider long-term implications (planning: {planning:.0f}/100).")
+        elif planning > 40:  # NEW: Moderate planning
+            insights['strengths'].append(f"You balance present and future well (planning: {planning:.0f}/100) - you think ahead without ignoring today.")
         elif planning < 35:
             insights['growth_areas'].append(f"You focus heavily on the present (planning: {planning:.0f}/100). Try asking: 'How will this look in 6 months?'")
         
         # Loss aversion insights
         loss_aversion = persona['loss_aversion']
-        if loss_aversion > 65:
+        if loss_aversion < 45:  # NEW: Low loss aversion is a strength
+            insights['strengths'].append(f"You don't let fear of losses paralyze you (loss aversion: {loss_aversion:.0f}/100) - this helps you seize opportunities!")
+        elif loss_aversion > 65:
             insights['bias_alerts'].append(f"⚠️ **Loss Aversion**: You're {loss_aversion:.0f}% more sensitive to losses than gains. This may cause you to miss opportunities.")
         
         # Bias pattern insights
@@ -168,6 +176,11 @@ class InsightGenerator:
                     insights['bias_alerts'].append(f"⚠️ **Anchoring** ({severity:.0f}/100): Initial numbers (prices, discounts) disproportionately influence your decisions.")
                 elif bias_name == 'sunk_cost':
                     insights['bias_alerts'].append(f"⚠️ **Sunk Cost Fallacy** ({severity:.0f}/100): Past investments are affecting future choices. Focus on what's ahead, not what's spent.")
+        
+        # FALLBACK: Ensure at least one strength always shows
+        if len(insights['strengths']) == 0:
+            insights['strengths'].append("🎉 You completed all scenarios - that shows commitment to learning and self-improvement!")
+            insights['strengths'].append("💪 Your willingness to challenge your thinking is a huge strength in personal finance.")
         
         return insights
     
